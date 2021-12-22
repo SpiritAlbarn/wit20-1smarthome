@@ -1,15 +1,11 @@
 import React, { FunctionComponent } from 'react';
-import { HookMqtt } from './components/Hook/';
-// Hook or Class
-// import ClassMqtt from './components/Class/'
+import { HookMqtt } from './components/Hook/HookMqtt';
 import './App.css';
 
 export const App: FunctionComponent = () => {
     return (
         <div className="App">
             <HookMqtt />
-            {/* Hook or Class */}
-            {/* <ClassMqtt /> */}
         </div>
     );
 };

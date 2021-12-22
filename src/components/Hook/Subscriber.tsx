@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext } from 'react';
 import { Card, Form, Input, Row, Col, Button, Select } from 'antd';
-import { QosOption } from './index';
+import { QosOption } from './HookMqtt';
 
 type Props = {
     sub: (subscription: any) => void;
