@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Card, Button, Form, Input, Row, Col } from 'antd';
 import { IClientOptions } from 'mqtt';
+import { clientOptins } from '../env/clientOptins';
 
 type Props = {
     connect: (host: string, mqttOption?: IClientOptions) => void;
@@ -10,37 +11,13 @@ type Props = {
 
 export const Connection: FunctionComponent<Props> = ({ connect, disconnect, connectBtn }) => {
     const [form] = Form.useForm();
-    const record = {
-        host: '192.168.178.83',
-        clientId: `mqttjs_ + ${Math.random().toString(16).substr(2, 8)}`,
-        port: 9001,
-    };
     function onFinish(values: any) {
         const { host, clientId, port, username, password } = values;
         const url = `ws://${host}:${port}/mqtt`;
-        const options = {
-            keepalive: 30,
-            protocolId: 'MQTT',
-            protocolVersion: 4,
-            clean: true,
-            reconnectPeriod: 1000,
-            connectTimeout: 30 * 1000,
-            will: {
-                topic: 'WillMsg',
-                payload: 'Connection Closed abnormally..!',
-                qos: 2,
-                retain: false,
-            },
-            rejectUnauthorized: false,
-            clientId: '',
-            username: '',
-            password: '',
-        };
+        const options = clientOptins;
         options.clientId = clientId;
         options.username = username;
         options.password = password;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         connect(url, options);
     }
 
@@ -53,7 +30,7 @@ export const Connection: FunctionComponent<Props> = ({ connect, disconnect, conn
     };
 
     const ConnectionForm = (
-        <Form layout="vertical" name="basic" form={form} initialValues={record} onFinish={onFinish}>
+        <Form layout="vertical" name="basic" form={form} initialValues={clientOptins} onFinish={onFinish}>
             <Row gutter={20}>
                 <Col span={8}>
                     <Form.Item label="Host" name="host">
