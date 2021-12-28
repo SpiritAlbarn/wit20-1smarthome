@@ -52,7 +52,8 @@ export const HookMqtt: FunctionComponent = () => {
     const mqttPublish = (context: any) => {
         if (client) {
             const { topic, qos, payload } = context;
-            client.publish(topic, payload, { qos }, (error) => {
+            const test = '{"color": {"r": 125, "g": 200, "b": 255}}';
+            client.publish(topic, test, { qos }, (error) => {
                 if (error) {
                     console.log('Publish error: ', error);
                 }
