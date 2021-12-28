@@ -1,4 +1,4 @@
-import React, { createContext, FunctionComponent, useEffect, useState } from 'react';
+import React, { createContext, FormEvent, FunctionComponent, useEffect, useState } from 'react';
 import { Connection } from './Connection';
 import { Publisher } from './Publisher';
 import { Subscriber } from './Subscriber';
@@ -6,6 +6,7 @@ import { Receiver } from './Receiver';
 import mqtt, { IClientOptions, MqttClient } from 'mqtt';
 import { qosOption } from '../helper/qosOption';
 import { QoSOptions } from '../../types/QoSOptions';
+import { hexToRgb } from '../helper/hexToRgb';
 
 export const QosOption = createContext<QoSOptions[]>([]);
 
@@ -52,8 +53,7 @@ export const HookMqtt: FunctionComponent = () => {
     const mqttPublish = (context: any) => {
         if (client) {
             const { topic, qos, payload } = context;
-            const test = '{"color": {"r": 125, "g": 200, "b": 255}}';
-            client.publish(topic, test, { qos }, (error) => {
+            client.publish(topic, payload, { qos }, (error) => {
                 if (error) {
                     console.log('Publish error: ', error);
                 }
@@ -87,6 +87,17 @@ export const HookMqtt: FunctionComponent = () => {
         }
     };
 
+    const setColor = (e: FormEvent<HTMLInputElement>) => {
+        console.log('color', hexToRgb(e.currentTarget.value));
+        hexToRgb(e.currentTarget.value);
+        const context = {
+            topic: 'zigbee2mqtt/lampe1/set/color',
+            qos: 2,
+            payload: '' + hexToRgb(e.currentTarget.value),
+        };
+        mqttPublish(context);
+    };
+
     return (
         <>
             <Connection connect={mqttConnect} disconnect={mqttDisconnect} connectBtn={connectStatus} />
@@ -95,6 +106,9 @@ export const HookMqtt: FunctionComponent = () => {
                 <Publisher publish={mqttPublish} />
             </QosOption.Provider>
             <Receiver payload={payload} />
+            <div>
+                <input type="color" onChange={setColor} />
+            </div>
         </>
     );
 };
