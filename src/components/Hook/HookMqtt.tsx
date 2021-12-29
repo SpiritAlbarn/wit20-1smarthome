@@ -98,6 +98,36 @@ export const HookMqtt: FunctionComponent = () => {
         mqttPublish(context);
     };
 
+    const effectLoop = (counter: number) => {
+        let context = {
+            topic: '',
+            qos: 0,
+            payload: '',
+        };
+        if (counter < 11) {
+            if (counter % 2 === 0) {
+                context = {
+                    topic: 'zigbee2mqtt/lampe1/set/state',
+                    qos: 2,
+                    payload: 'ON',
+                };
+            } else {
+                context = {
+                    topic: 'zigbee2mqtt/lampe1/set/state',
+                    qos: 2,
+                    payload: 'OFF',
+                };
+            }
+            setTimeout(function () {
+                counter++;
+                console.log(counter);
+                mqttPublish(context);
+
+                effectLoop(counter);
+            }, 1000);
+        }
+    };
+
     return (
         <>
             <Connection connect={mqttConnect} disconnect={mqttDisconnect} connectBtn={connectStatus} />
@@ -109,6 +139,8 @@ export const HookMqtt: FunctionComponent = () => {
             <div>
                 <input type="color" onChange={setColor} />
             </div>
+            <button onClick={() => effectLoop(0)}>Click Me Please</button>
+            <p className="text-4xl text-red-900">ASDASF</p>
         </>
     );
 };
