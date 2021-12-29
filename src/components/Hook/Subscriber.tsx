@@ -13,7 +13,7 @@ export const Subscriber: FunctionComponent<Props> = ({ sub, unSub, showUnsub }) 
     const qosOptions = useContext(QosOption);
 
     const record = {
-        topic: 'zigbee2mqtt/0xf0d1b8000019237e',
+        topic: 'zigbee2mqtt/lampe1',
         qos: 2,
     };
 

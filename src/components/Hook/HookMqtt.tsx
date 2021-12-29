@@ -7,6 +7,7 @@ import mqtt, { IClientOptions, MqttClient } from 'mqtt';
 import { qosOption } from '../helper/qosOption';
 import { QoSOptions } from '../../types/QoSOptions';
 import { hexToRgb } from '../helper/hexToRgb';
+import { Status } from './Status';
 
 export const QosOption = createContext<QoSOptions[]>([]);
 
@@ -15,6 +16,7 @@ export const HookMqtt: FunctionComponent = () => {
     const [isSub, setIsSub] = useState<boolean>(false);
     const [payload, setPayload] = useState<JSON | any>({});
     const [connectStatus, setConnectStatus] = useState('Connect');
+    const [connected, setConnected] = useState(false);
 
     const mqttConnect = (host: string, mqttOption?: IClientOptions) => {
         setConnectStatus('Connecting');
@@ -25,6 +27,7 @@ export const HookMqtt: FunctionComponent = () => {
         if (client) {
             client.on('connect', () => {
                 setConnectStatus('Connected');
+                setConnected(true);
             });
             client.on('error', (err) => {
                 console.error('Connection error: ', err);
@@ -141,6 +144,7 @@ export const HookMqtt: FunctionComponent = () => {
             </div>
             <button onClick={() => effectLoop(0)}>Click Me Please</button>
             <p className="text-4xl text-red-900">ASDASF</p>
+            {connected && client && <Status payload={payload} publish={mqttPublish} client={client} />}
         </>
     );
 };

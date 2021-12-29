@@ -16,11 +16,13 @@ export const Receiver: FunctionComponent<Props> = ({ payload }) => {
         }
     }, [payload]);
 
-    const renderListItem = (item: any) => (
-        <List.Item>
-            <List.Item.Meta title={item.topic} description={item.message} />
-        </List.Item>
-    );
+    const renderListItem = (item: any) => {
+        return (
+            <List.Item>
+                <List.Item.Meta title={item.topic} description={item.message} />
+            </List.Item>
+        );
+    };
 
     return (
         <Card title="Receiver">
