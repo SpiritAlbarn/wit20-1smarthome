@@ -142,8 +142,7 @@ export const HookMqtt: FunctionComponent = () => {
             <div>
                 <input type="color" onChange={setColor} />
             </div>
-            <button onClick={() => effectLoop(0)}>Click Me Please</button>
-            <p className="text-4xl text-red-900">ASDASF</p>
+            <button onClick={() => effectLoop(0)}>Effect</button>
             {connected && client && <Status payload={payload} publish={mqttPublish} client={client} />}
         </>
     );
