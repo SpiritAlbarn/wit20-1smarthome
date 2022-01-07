@@ -27,6 +27,12 @@ export const Receiver: FunctionComponent<Props> = ({ payload }) => {
     return (
         <Card title="Receiver">
             <List size="small" bordered dataSource={messages} renderItem={renderListItem} />
+            <button
+                onClick={() => {
+                    setMessages([]);
+                }}>
+                Clear
+            </button>
         </Card>
     );
 };
