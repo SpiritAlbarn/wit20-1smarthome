@@ -102,6 +102,15 @@ export const HookMqtt: FunctionComponent = () => {
         mqttPublish(context);
     };
 
+    const setBrightness = (e: FormEvent<HTMLInputElement>) => {
+        const context = {
+            topic: 'zigbee2mqtt/lampe1/set/brightness',
+            qos: 2,
+            payload: '' + e.currentTarget.value,
+        };
+        mqttPublish(context);
+    };
+
     const effectLoop = (counter: number) => {
         let x = 0;
         const intervalID = setInterval(() => {
@@ -173,6 +182,9 @@ export const HookMqtt: FunctionComponent = () => {
             <Receiver payload={payload} />
             <div>
                 <input type="color" onChange={setColor} />
+            </div>
+            <div>
+                <input type="range" min="0" max="255" step="1" onChange={setBrightness} />
             </div>
             <button onClick={() => effectLoop(10)}>Effect</button>
             {connected && client && <Status payload={payload} publish={mqttPublish} client={client} />}
