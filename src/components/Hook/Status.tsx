@@ -33,6 +33,24 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
             payload: '',
         };
         publish(context);
+
+        const moveSensor = document.getElementById('move-sensor');
+        moveSensor?.addEventListener('mouseover', () => {
+            const context = {
+                topic: 'zigbee2mqtt/lampe1/set/state',
+                qos: 2,
+                payload: 'ON',
+            };
+            publish(context);
+        });
+        moveSensor?.addEventListener('mouseout', () => {
+            const context = {
+                topic: 'zigbee2mqtt/lampe1/set/state',
+                qos: 2,
+                payload: 'OFF',
+            };
+            publish(context);
+        });
     }, []);
 
     useEffect(() => {
@@ -95,7 +113,10 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
     }
 
     return (
-        <div className="flex w-full justify-center text-gray-800">
+        <div className="flex flex-col w-full justify-center text-gray-800">
+            <section>
+                <div className="w-full h-36 mb-12 bg-yellow-500" id="move-sensor"></div>
+            </section>
             <div className="flex flex-col w-1/3 bg-white rounded-sm">
                 <div className="flex justify-between">
                     <p>State:</p>

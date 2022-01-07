@@ -113,6 +113,7 @@ export const HookMqtt: FunctionComponent = () => {
 
     const effectLoop = (counter: number) => {
         let x = 0;
+        const y = 0;
         const intervalID = setInterval(() => {
             if (x > counter) {
                 window.clearInterval(intervalID);
@@ -137,6 +138,13 @@ export const HookMqtt: FunctionComponent = () => {
                 }
                 x++;
                 console.log(x);
+                mqttPublish(context);
+
+                context = {
+                    topic: 'zigbee2mqtt/lampe1/set/color',
+                    qos: 2,
+                    payload: `{"x": ${x / 18}, "y": ${x / 18}}`,
+                };
                 mqttPublish(context);
             }
         }, 1000);
