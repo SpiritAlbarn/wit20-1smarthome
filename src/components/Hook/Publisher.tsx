@@ -12,7 +12,7 @@ export const Publisher: FunctionComponent<Props> = ({ publish }) => {
     const qosOptions = useContext(QosOption);
 
     const record = {
-        topic: 'zigbee2mqtt/0xf0d1b8000019237e/set/state',
+        topic: 'zigbee2mqtt/lampe1/set/state',
         qos: 2,
     };
 

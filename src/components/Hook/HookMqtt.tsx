@@ -90,6 +90,7 @@ export const HookMqtt: FunctionComponent = () => {
         }
     };
 
+    //TODO: használj statet(color value), talán azzal műkszik
     const setColor = (e: FormEvent<HTMLInputElement>) => {
         console.log('color', hexToRgb(e.currentTarget.value));
         hexToRgb(e.currentTarget.value);
@@ -102,34 +103,65 @@ export const HookMqtt: FunctionComponent = () => {
     };
 
     const effectLoop = (counter: number) => {
-        let context = {
-            topic: '',
-            qos: 0,
-            payload: '',
-        };
-        if (counter < 11) {
-            if (counter % 2 === 0) {
-                context = {
-                    topic: 'zigbee2mqtt/lampe1/set/state',
-                    qos: 2,
-                    payload: 'ON',
-                };
+        let x = 0;
+        const intervalID = setInterval(() => {
+            if (x > counter) {
+                window.clearInterval(intervalID);
             } else {
-                context = {
-                    topic: 'zigbee2mqtt/lampe1/set/state',
-                    qos: 2,
-                    payload: 'OFF',
+                let context = {
+                    topic: '',
+                    qos: 0,
+                    payload: '',
                 };
-            }
-            setTimeout(function () {
-                counter++;
-                console.log(counter);
+                if (x % 2 === 0) {
+                    context = {
+                        topic: 'zigbee2mqtt/lampe1/set/state',
+                        qos: 2,
+                        payload: 'ON',
+                    };
+                } else {
+                    context = {
+                        topic: 'zigbee2mqtt/lampe1/set/state',
+                        qos: 2,
+                        payload: 'OFF',
+                    };
+                }
+                x++;
+                console.log(x);
                 mqttPublish(context);
-
-                effectLoop(counter);
-            }, 1000);
-        }
+            }
+        }, 1000);
     };
+
+    // const effectLoop = (counter: number) => {
+    //     let context = {
+    //         topic: '',
+    //         qos: 0,
+    //         payload: '',
+    //     };
+    //     if (counter < 11) {
+    //         if (counter % 2 === 0) {
+    //             context = {
+    //                 topic: 'zigbee2mqtt/lampe1/set/state',
+    //                 qos: 2,
+    //                 payload: 'ON',
+    //             };
+    //         } else {
+    //             context = {
+    //                 topic: 'zigbee2mqtt/lampe1/set/state',
+    //                 qos: 2,
+    //                 payload: 'OFF',
+    //             };
+    //         }
+    //         setTimeout(function () {
+    //             counter++;
+    //             console.log(counter);
+    //             mqttPublish(context);
+    //
+    //             effectLoop(counter);
+    //         }, 1000);
+    //     }
+    // };
 
     return (
         <>
@@ -142,7 +174,7 @@ export const HookMqtt: FunctionComponent = () => {
             <div>
                 <input type="color" onChange={setColor} />
             </div>
-            <button onClick={() => effectLoop(0)}>Effect</button>
+            <button onClick={() => effectLoop(10)}>Effect</button>
             {connected && client && <Status payload={payload} publish={mqttPublish} client={client} />}
         </>
     );
