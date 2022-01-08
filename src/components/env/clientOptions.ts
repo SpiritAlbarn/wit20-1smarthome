@@ -1,6 +1,6 @@
 import { IClientOptions } from 'mqtt/types/lib/client-options';
 
-export const clientOptins: IClientOptions = {
+export const clientOptions: IClientOptions = {
     // host: '192.168.178.83',
     host: '192.168.178.107',
     clientId: `mqttjs_ + ${Math.random().toString(16).substr(2, 8)}`,

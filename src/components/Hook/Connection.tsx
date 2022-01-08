@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import { Card, Button, Form, Input, Row, Col } from 'antd';
 import { IClientOptions } from 'mqtt';
-import { clientOptins } from '../env/clientOptins';
+
+import { clientOptions } from '../env/clientOptions';
 
 type Props = {
     connect: (host: string, mqttOption?: IClientOptions) => void;
@@ -10,69 +10,86 @@ type Props = {
 };
 
 export const Connection: FunctionComponent<Props> = ({ connect, disconnect, connectBtn }) => {
-    const [form] = Form.useForm();
-    function onFinish(values: any) {
-        const { host, clientId, port, username, password } = values;
-        const url = `ws://${host}:${port}/mqtt`;
-        const options = clientOptins;
-        options.clientId = clientId;
-        options.username = username;
-        options.password = password;
-        connect(url, options);
-    }
-
-    const handleConnect = () => {
-        form.submit();
-    };
-
     const handleDisconnect = () => {
         disconnect();
     };
 
-    const ConnectionForm = (
-        <Form layout="vertical" name="basic" form={form} initialValues={clientOptins} onFinish={onFinish}>
-            <Row gutter={20}>
-                <Col span={8}>
-                    <Form.Item label="Host" name="host">
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Port" name="port">
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Client ID" name="clientId">
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Username" name="username">
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item label="Password" name="password">
-                        <Input />
-                    </Form.Item>
-                </Col>
-            </Row>
-        </Form>
-    );
+    const connectSocket = () => {
+        const host = (document.getElementById('host') as HTMLInputElement).value;
+        const clientId = (document.getElementById('clientId') as HTMLInputElement).value;
+        const port = (document.getElementById('port') as HTMLInputElement).value;
+        const username = (document.getElementById('username') as HTMLInputElement).value;
+        const password = (document.getElementById('password') as HTMLInputElement).value;
+
+        const url = `ws://${host}:${port}/mqtt`;
+        const options = clientOptions;
+        if (clientId && username && password) {
+            options.clientId = clientId;
+            options.username = username;
+            options.password = password;
+        }
+        connect(url, options);
+    };
 
     return (
-        <Card
-            title="Connection"
-            actions={[
-                <Button type="primary" key={1} onClick={handleConnect}>
-                    {connectBtn}
-                </Button>,
-                <Button key={2} danger onClick={handleDisconnect}>
-                    Disconnect
-                </Button>,
-            ]}>
-            {ConnectionForm}
-        </Card>
+        <div className="flex flex-col w-full items-center text-gray-800">
+            <div className="flex flex-wrap w-2/5 gap-6 text-xl bg-white mb-5 px-6 py-6">
+                <div className="w-full border-b-2 font-bold">Connection</div>
+                <div className="flex flex-col">
+                    <label htmlFor="host">Host</label>
+                    <input type="text" id="host" value={clientOptions.host} className="border border-gray-300 px-3" />
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="port">Port</label>
+                    <input type="text" id="port" value={clientOptions.port} className="border border-gray-300 px-3" />
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="clientId">Client ID</label>
+                    <input
+                        type="text"
+                        id="clientId"
+                        value={clientOptions.clientId}
+                        className="border border-gray-300 px-3"
+                    />
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={clientOptions.username}
+                        className="border border-gray-300 px-3"
+                    />
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="text"
+                        id="password"
+                        value={clientOptions.password}
+                        className="border border-gray-300 px-3"
+                    />
+                </div>
+                <div className="flex w-full divide-x divide-gray-800">
+                    <div className="w-1/2 flex justify-center">
+                        <button
+                            onClick={connectSocket}
+                            className={
+                                'flex items-center justify-center rounded-lg px-3 py-1 text-white text-2xl ' +
+                                (connectBtn === 'Connected' ? 'bg-green-600' : 'bg-blue-600 hover:bg-green-300')
+                            }>
+                            {connectBtn}
+                        </button>
+                    </div>
+                    <div className="w-1/2 flex justify-center">
+                        <button
+                            onClick={handleDisconnect}
+                            className="bg-red-800 text-white rounded-lg hover:bg-red-600 px-3 py-1">
+                            Disonnect
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
