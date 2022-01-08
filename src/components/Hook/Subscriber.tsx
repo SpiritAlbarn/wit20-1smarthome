@@ -59,11 +59,34 @@ export const Subscriber: FunctionComponent<Props> = ({ sub, unSub, showUnsub }) 
                     </Row>
                 </Form>
             </Card>
-            <div className="flex flex-wrap w-2/5 gap-6 text-xl bg-white mb-5 px-6 py-6">
+            {/*TODO: Wrapping*/}
+            <div className="flex flex-wrap w-full md:w-2/5 gap-6 text-xl bg-white mb-5 px-6 py-6 md:justify-between">
                 <div className="w-full border-b-2 font-bold">Connection</div>
-                <div className="flex flex-col">
+                <div className="flex flex-col w-full md:w-2/5">
                     <label htmlFor="host">Host</label>
                     <input type="text" id="host" value={clientOptions.host} className="border border-gray-300 px-3" />
+                </div>
+                <div className="flex flex-col w-full md:w-2/5">
+                    <label htmlFor="qos">QoS</label>
+                    <select name="qos" id="qos">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2" selected={true}>
+                            2
+                        </option>
+                    </select>
+                </div>
+                <div className="flex w-full divide-x divide-gray-800">
+                    <Button type="primary" htmlType="submit">
+                        Subscribe
+                    </Button>
+                    {showUnsub ? (
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        <Button type="danger" style={{ marginLeft: '10px' }} onClick={handleUnsub}>
+                            Unsubscribe
+                        </Button>
+                    ) : null}
                 </div>
             </div>
         </div>

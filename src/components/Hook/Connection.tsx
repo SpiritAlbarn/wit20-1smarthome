@@ -33,7 +33,7 @@ export const Connection: FunctionComponent<Props> = ({ connect, disconnect, conn
 
     return (
         <div className="flex flex-col w-full items-center text-gray-800">
-            <div className="flex flex-wrap w-2/5 gap-6 text-xl bg-white mb-5 px-6 py-6">
+            <div className="flex flex-wrap w-full md:w-2/5 gap-6 text-xl bg-white mb-5 px-6 py-6">
                 <div className="w-full border-b-2 font-bold">Connection</div>
                 <div className="flex flex-col">
                     <label htmlFor="host">Host</label>
