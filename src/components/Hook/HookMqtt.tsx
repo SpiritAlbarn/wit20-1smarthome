@@ -116,6 +116,17 @@ export const HookMqtt: FunctionComponent = () => {
         const y = 0;
         const intervalID = setInterval(() => {
             if (x > counter) {
+                let context = {
+                    topic: '',
+                    qos: 0,
+                    payload: '',
+                };
+                context = {
+                    topic: 'zigbee2mqtt/lampe1/set/color',
+                    qos: 2,
+                    payload: `{"x": ${0.1813}, "y": ${0.7363}}`,
+                };
+                mqttPublish(context);
                 window.clearInterval(intervalID);
             } else {
                 let context = {
