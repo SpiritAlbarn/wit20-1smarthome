@@ -15,7 +15,6 @@ export const Subscriber: FunctionComponent<Props> = ({ sub, unSub, showUnsub }) 
 
     const record = {
         topic: 'zigbee2mqtt/lampe1',
-        qos: 2,
     };
 
     const onFinish = (values: any) => {
@@ -61,10 +60,10 @@ export const Subscriber: FunctionComponent<Props> = ({ sub, unSub, showUnsub }) 
             </Card>
             {/*TODO: Wrapping*/}
             <div className="flex flex-wrap w-full md:w-2/5 gap-6 text-xl bg-white mb-5 px-6 py-6 md:justify-between">
-                <div className="w-full border-b-2 font-bold">Connection</div>
+                <div className="w-full border-b-2 font-bold">Subscriber</div>
                 <div className="flex flex-col w-full md:w-2/5">
-                    <label htmlFor="host">Host</label>
-                    <input type="text" id="host" value={clientOptions.host} className="border border-gray-300 px-3" />
+                    <label htmlFor="host">Topic</label>
+                    <input type="text" id="host" value={record.topic} className="border border-gray-300 px-3" />
                 </div>
                 <div className="flex flex-col w-full md:w-2/5">
                     <label htmlFor="qos">QoS</label>

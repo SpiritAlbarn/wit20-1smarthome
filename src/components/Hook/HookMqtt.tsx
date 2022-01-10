@@ -161,36 +161,6 @@ export const HookMqtt: FunctionComponent = () => {
         }, 1000);
     };
 
-    // const effectLoop = (counter: number) => {
-    //     let context = {
-    //         topic: '',
-    //         qos: 0,
-    //         payload: '',
-    //     };
-    //     if (counter < 11) {
-    //         if (counter % 2 === 0) {
-    //             context = {
-    //                 topic: 'zigbee2mqtt/lampe1/set/state',
-    //                 qos: 2,
-    //                 payload: 'ON',
-    //             };
-    //         } else {
-    //             context = {
-    //                 topic: 'zigbee2mqtt/lampe1/set/state',
-    //                 qos: 2,
-    //                 payload: 'OFF',
-    //             };
-    //         }
-    //         setTimeout(function () {
-    //             counter++;
-    //             console.log(counter);
-    //             mqttPublish(context);
-    //
-    //             effectLoop(counter);
-    //         }, 1000);
-    //     }
-    // };
-
     return (
         <>
             <Connection connect={mqttConnect} disconnect={mqttDisconnect} connectBtn={connectStatus} />
@@ -198,7 +168,6 @@ export const HookMqtt: FunctionComponent = () => {
                 <Subscriber sub={mqttSub} unSub={mqttUnSub} showUnsub={isSub} />
                 <Publisher publish={mqttPublish} />
             </QosOption.Provider>
-            <Receiver payload={payload} />
             <div>
                 <input type="color" onChange={setColor} />
             </div>
@@ -207,6 +176,7 @@ export const HookMqtt: FunctionComponent = () => {
             </div>
             <button onClick={() => effectLoop(10)}>Effect</button>
             {connected && client && <Status payload={payload} publish={mqttPublish} client={client} />}
+            <Receiver payload={payload} />
         </>
     );
 };
