@@ -37,16 +37,14 @@ export const Subscriber: FunctionComponent<Props> = ({ sub, unSub, showUnsub }) 
                 <div className="w-full border-b-2 font-bold">Subscriber</div>
                 <div className="flex flex-col w-full md:w-2/5">
                     <label htmlFor="topic">Topic</label>
-                    <input type="text" id="topic" value={record.topic} className="border border-gray-300 px-3" />
+                    <input type="text" id="topic" defaultValue={record.topic} className="border border-gray-300 px-3" />
                 </div>
                 <div className="flex flex-col w-full md:w-2/5">
                     <label htmlFor="qos">QoS</label>
                     <select name="qos" id="qos">
                         <option value="0">0</option>
                         <option value="1">1</option>
-                        <option value="2" selected={true}>
-                            2
-                        </option>
+                        <option value="2">2</option>
                     </select>
                 </div>
                 <div className="flex w-full divide-x divide-gray-800">
