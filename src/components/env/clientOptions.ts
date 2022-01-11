@@ -2,8 +2,8 @@ import { IClientOptions } from 'mqtt/types/lib/client-options';
 
 export const clientOptions: IClientOptions = {
     // host: '192.168.178.83',
-    // host: '192.168.178.107',
-    host: '192.168.178.55',
+    host: '192.168.178.107',
+    // host: '192.168.178.55',
     clientId: `mqttjs_ + ${Math.random().toString(16).substr(2, 8)}`,
     port: 9001,
     keepalive: 30,
