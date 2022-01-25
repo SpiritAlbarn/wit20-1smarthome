@@ -90,7 +90,6 @@ export const HookMqtt: FunctionComponent = () => {
         }
     };
 
-    //TODO: használj statet(color value), talán azzal műkszik
     const setColor = (e: FormEvent<HTMLInputElement>) => {
         console.log('color', hexToRgb(e.currentTarget.value));
         hexToRgb(e.currentTarget.value);
@@ -113,7 +112,6 @@ export const HookMqtt: FunctionComponent = () => {
 
     const effectLoop = (counter: number) => {
         let x = 0;
-        const y = 0;
         const intervalID = setInterval(() => {
             if (x > counter) {
                 let context = {
@@ -174,7 +172,9 @@ export const HookMqtt: FunctionComponent = () => {
             <div>
                 <input type="range" min="0" max="255" step="1" onChange={setBrightness} />
             </div>
-            <button onClick={() => effectLoop(10)}>Effect</button>
+            <button onClick={() => effectLoop(10)} className="mb-6">
+                Effect
+            </button>
             {connected && client && <Status payload={payload} publish={mqttPublish} client={client} />}
             <Receiver payload={payload} />
         </>

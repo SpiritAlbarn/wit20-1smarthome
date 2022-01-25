@@ -156,13 +156,13 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
     return (
         <div className="flex flex-col w-full justify-center text-gray-800">
             <section className="flex w-full justify-center">
-                <div className="w-1/3 h-36 mb-12 bg-yellow-500" id="move-sensor"></div>
+                <div className="w-full md:w-1/3 h-36 mb-12 bg-yellow-500" id="move-sensor" />
             </section>
-            <div className="flex flex-col items-center mb-3">
-                <button onClick={toggleKontakt} className="text-white">
+            <div className="flex flex-col items-center mb-6">
+                <button onClick={toggleKontakt} className="text-white mb-6">
                     Kontaktsensor
                 </button>
-                <div className="flex flex-col w-1/3 bg-white rounded-sm">
+                <div className="flex flex-col w-full md:w-1/3 bg-white rounded-sm">
                     <div className="text-2xl">Lampe</div>
                     <div className="flex justify-between">
                         <p>State:</p>

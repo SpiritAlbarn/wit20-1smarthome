@@ -33,22 +33,32 @@ export const Connection: FunctionComponent<Props> = ({ connect, disconnect, conn
 
     return (
         <div className="flex flex-col w-full items-center text-gray-800">
-            <div className="flex flex-wrap w-full md:w-2/5 gap-6 text-xl bg-white mb-5 px-6 py-6">
+            <div className="flex flex-wrap w-full md:w-2/5 gap-6 text-xl bg-white mb-5 px-6 py-6 justify-center md:justify-start">
                 <div className="w-full border-b-2 font-bold">Connection</div>
                 <div className="flex flex-col">
                     <label htmlFor="host">Host</label>
-                    <input type="text" id="host" value={clientOptions.host} className="border border-gray-300 px-3" />
+                    <input
+                        type="text"
+                        id="host"
+                        defaultValue={clientOptions.host}
+                        className="border border-gray-300 px-3"
+                    />
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="port">Port</label>
-                    <input type="text" id="port" value={clientOptions.port} className="border border-gray-300 px-3" />
+                    <input
+                        type="text"
+                        id="port"
+                        defaultValue={clientOptions.port}
+                        className="border border-gray-300 px-3"
+                    />
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="clientId">Client ID</label>
                     <input
                         type="text"
                         id="clientId"
-                        value={clientOptions.clientId}
+                        defaultValue={clientOptions.clientId}
                         className="border border-gray-300 px-3"
                     />
                 </div>
@@ -57,7 +67,7 @@ export const Connection: FunctionComponent<Props> = ({ connect, disconnect, conn
                     <input
                         type="text"
                         id="username"
-                        value={clientOptions.username}
+                        defaultValue={clientOptions.username}
                         className="border border-gray-300 px-3"
                     />
                 </div>
@@ -66,7 +76,7 @@ export const Connection: FunctionComponent<Props> = ({ connect, disconnect, conn
                     <input
                         type="text"
                         id="password"
-                        value={clientOptions.password}
+                        defaultValue={clientOptions.password}
                         className="border border-gray-300 px-3"
                     />
                 </div>
