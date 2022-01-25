@@ -18,6 +18,13 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
         brightness: 0,
         linkquality: 0,
     });
+    const [sensor, setSensor] = useState({
+        battery: 0,
+        battery_low: false,
+        contact: true,
+        linkquality: 0,
+        tamper: true,
+    });
 
     const [kontakt, setKontakt] = useState(false);
 
@@ -32,6 +39,14 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
 
         const kontaktSensor = 'zigbee2mqtt/kontaktsensor';
         client.subscribe(kontaktSensor, { qos: 2 }, (error) => {
+            if (error) {
+                console.log('Subscribe to topics error', error);
+                return;
+            }
+        });
+
+        const bewegungsMelder = 'zigbee2mqtt/bewegungsmelder';
+        client.subscribe(bewegungsMelder, { qos: 2 }, (error) => {
             if (error) {
                 console.log('Subscribe to topics error', error);
                 return;
@@ -85,6 +100,19 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
         if (payload.topic == 'zigbee2mqtt/kontaktsensor') {
             const statusObj = JSON.parse(payload.message);
             let context;
+            const sensorMap = {
+                battery: 0,
+                battery_low: false,
+                contact: true,
+                linkquality: 0,
+                tamper: true,
+            };
+            sensorMap.battery = statusObj.battery;
+            sensorMap.battery_low = statusObj.battery_low;
+            sensorMap.contact = statusObj.contact;
+            sensorMap.linkquality = statusObj.linkquality;
+            sensorMap.tamper = statusObj.tamper;
+            setSensor(sensorMap);
             if (statusObj.contact) {
                 context = {
                     topic: 'zigbee2mqtt/lampe1/set/state',
@@ -130,11 +158,12 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
             <section className="flex w-full justify-center">
                 <div className="w-1/3 h-36 mb-12 bg-yellow-500" id="move-sensor"></div>
             </section>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center mb-3">
                 <button onClick={toggleKontakt} className="text-white">
                     Kontaktsensor
                 </button>
                 <div className="flex flex-col w-1/3 bg-white rounded-sm">
+                    <div className="text-2xl">Lampe</div>
                     <div className="flex justify-between">
                         <p>State:</p>
                         <p>{status.state}</p>
@@ -157,6 +186,29 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
                     <div className="flex justify-between">
                         <p>Link Quality:</p>
                         <p>{status.linkquality}</p>
+                    </div>
+                </div>
+                <div className="flex flex-col w-1/3 bg-white rounded-sm">
+                    <div className="text-2xl">Kontaktsensor</div>
+                    <div className="flex justify-between">
+                        <p>Battery:</p>
+                        <p>{sensor.battery}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Battery Low:</p>
+                        <p>{sensor.battery_low}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Link Quality</p>
+                        <p>{sensor.linkquality}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Contact:</p>
+                        <p>{sensor.contact}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Tamper:</p>
+                        <p>{sensor.tamper}</p>
                     </div>
                 </div>
             </div>
