@@ -25,6 +25,13 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
         linkquality: 0,
         tamper: true,
     });
+    const [melder, setMelder] = useState({
+        battery: 0,
+        battery_low: false,
+        occupancy: true,
+        voltage: 0,
+        tamper: true,
+    });
 
     const [kontakt, setKontakt] = useState(false);
 
@@ -63,17 +70,17 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
         const moveSensor = document.getElementById('move-sensor');
         moveSensor?.addEventListener('mouseover', () => {
             const context = {
-                topic: 'zigbee2mqtt/lampe1/set/state',
+                topic: 'zigbee2mqtt/bewegungsmelder',
                 qos: 2,
-                payload: 'ON',
+                payload: '{"battery":100,"battery_low":false,"occupancy":false,"tamper":true,"voltage":3100}',
             };
             publish(context);
         });
         moveSensor?.addEventListener('mouseout', () => {
             const context = {
-                topic: 'zigbee2mqtt/lampe1/set/state',
+                topic: 'zigbee2mqtt/bewegungsmelder',
                 qos: 2,
-                payload: 'OFF',
+                payload: '{"battery":100,"battery_low":false,"occupancy":false,"tamper":false,"voltage":3100}',
             };
             publish(context);
         });
@@ -119,14 +126,70 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
                     qos: 2,
                     payload: 'ON',
                 };
+                publish(context);
+
+                context = {
+                    topic: 'zigbee2mqtt/lampe1/set/color',
+                    qos: 2,
+                    payload: '{"x": 0.2388, "y": 0.5358}',
+                };
+                publish(context);
             } else {
                 context = {
                     topic: 'zigbee2mqtt/lampe1/set/state',
                     qos: 2,
                     payload: 'OFF',
                 };
+                publish(context);
             }
-            publish(context);
+        }
+        if (payload.topic == 'zigbee2mqtt/bewegungsmelder') {
+            const statusObj = JSON.parse(payload.message);
+            let context;
+            const melderMap = {
+                battery: 0,
+                battery_low: false,
+                occupancy: false,
+                linkquality: 0,
+                voltage: 0,
+                tamper: false,
+            };
+            melderMap.battery = statusObj.battery;
+            melderMap.battery_low = statusObj.battery_low;
+            melderMap.occupancy = statusObj.contact;
+            melderMap.linkquality = statusObj.linkquality;
+            melderMap.voltage = statusObj.voltage;
+            melderMap.tamper = statusObj.tamper;
+            setMelder(melderMap);
+            if (statusObj.tamper) {
+                context = {
+                    topic: 'zigbee2mqtt/lampe1/set/color',
+                    qos: 2,
+                    payload: '{"x": 0.6899, "y": 0.3078}',
+                };
+                publish(context);
+
+                context = {
+                    topic: 'zigbee2mqtt/lampe1/set/state',
+                    qos: 2,
+                    payload: 'ON',
+                };
+                publish(context);
+            } else {
+                context = {
+                    topic: 'zigbee2mqtt/lampe1/set/state',
+                    qos: 2,
+                    payload: 'OFF',
+                };
+                publish(context);
+
+                context = {
+                    topic: 'zigbee2mqtt/lampe1/set/state',
+                    qos: 2,
+                    payload: 'OFF',
+                };
+                publish(context);
+            }
         }
     }, [payload]);
 
@@ -162,7 +225,7 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
                 <button onClick={toggleKontakt} className="text-white mb-6">
                     Kontaktsensor
                 </button>
-                <div className="flex flex-col w-full md:w-1/3 bg-white rounded-sm">
+                <div className="flex flex-col w-full md:w-1/3 mb-6 bg-white rounded-sm">
                     <div className="text-2xl">Lampe</div>
                     <div className="flex justify-between">
                         <p>State:</p>
@@ -188,7 +251,7 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
                         <p>{status.linkquality}</p>
                     </div>
                 </div>
-                <div className="flex flex-col w-1/3 bg-white rounded-sm">
+                <div className="flex flex-col w-full md:w-1/3 mb-6 bg-white rounded-sm">
                     <div className="text-2xl">Kontaktsensor</div>
                     <div className="flex justify-between">
                         <p>Battery:</p>
@@ -196,7 +259,7 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
                     </div>
                     <div className="flex justify-between">
                         <p>Battery Low:</p>
-                        <p>{sensor.battery_low}</p>
+                        <p>{sensor.battery_low ? 'true' : 'false'}</p>
                     </div>
                     <div className="flex justify-between">
                         <p>Link Quality</p>
@@ -204,11 +267,38 @@ export const Status: FunctionComponent<Props> = ({ payload, publish, client }) =
                     </div>
                     <div className="flex justify-between">
                         <p>Contact:</p>
-                        <p>{sensor.contact}</p>
+                        <p>{sensor.contact ? 'true' : 'false'}</p>
                     </div>
                     <div className="flex justify-between">
                         <p>Tamper:</p>
-                        <p>{sensor.tamper}</p>
+                        <p>{sensor.tamper ? 'true' : 'false'}</p>
+                    </div>
+                </div>
+                <div className="flex flex-col w-full md:w-1/3 bg-white rounded-sm">
+                    <div className="text-2xl">Bewegungsmelder</div>
+                    <div className="flex justify-between">
+                        <p>Battery:</p>
+                        <p>{melder.battery}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Battery Low:</p>
+                        <p>{melder.battery_low ? 'true' : 'false'}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Link Quality</p>
+                        <p>{sensor.linkquality}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Voltage:</p>
+                        <p>{melder.voltage}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Occupancy</p>
+                        <p>{melder.occupancy ? 'true' : 'false'}</p>
+                    </div>
+                    <div className="flex justify-between">
+                        <p>Tamper:</p>
+                        <p>{melder.tamper ? 'true' : 'false'}</p>
                     </div>
                 </div>
             </div>

@@ -50,6 +50,7 @@ export const HookMqtt: FunctionComponent = () => {
             client.end(() => {
                 setConnectStatus('Connect');
             });
+            window.location.reload();
         }
     };
 
